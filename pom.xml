@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.lk.kt</groupId>
+  <artifactId>kt</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>kt</name>
+  
+  <build>  
+  	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+				<compilerArguments>
+				      <verbose/>
+					  <source>1.8</source> 
+					  <target>1.8</target>
+                      <bootclasspath>C:\Program Files\Java\jre1.8.0_111\lib\rt.jar;C:\Program Files\Java\jre1.8.0_111\lib\jce.jar</bootclasspath>
+				</compilerArguments>
+				<source>1.8</source> 
+				<target>1.8</target>
+				<showWarnings>true</showWarnings>
+			</configuration>
+		</plugin>
+	</plugins>
+  
+<!--         <plugins>   -->
+<!--         	<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-compiler-plugin</artifactId> -->
+<!-- 				<version>3.1</version> -->
+<!-- 				<configuration> -->
+<!-- 					<verbose>true</verbose> -->
+<!-- 					<fork>true</fork> -->
+<!-- 					<executable>C:\Program Files\Java\jdk1.8.0_111\bin\javac</executable> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+<!--         </plugins>   -->
+        
+        
+        
+        <resources>
+	        <!--编译之后包含xml-->
+	        <resource>  
+		        <directory>src/main/resources</directory>  
+		    </resource>
+	        <resource>
+	            <directory>src/main/java</directory>
+	            <includes>
+	                <include>**/*.xml</include>
+	            </includes>
+	            <filtering>true</filtering>
+	        </resource>
+    	</resources>
+    </build>
+  
+  <modules>
+    <module>Demo</module>
+    <module>ManagerModule</module>
+
+	<module>jsoupDemo</module>
+  </modules>
+</project>
