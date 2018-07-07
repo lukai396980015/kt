@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Demo/Demo.iml" filepath="$PROJECT_DIR$/Demo/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/ManagerModule/ManagerModule.iml" filepath="$PROJECT_DIR$/ManagerModule/ManagerModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jsoupDemo/jsoupDemo.iml" filepath="$PROJECT_DIR$/jsoupDemo/jsoupDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/kt.iml" filepath="$PROJECT_DIR$/kt.iml" />
     </modules>
   </component>

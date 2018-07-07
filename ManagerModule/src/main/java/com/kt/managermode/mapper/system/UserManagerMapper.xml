@@ -4,8 +4,6 @@
 
 
     <select id="listUser" resultType="com.kt.managermode.bean.system.UserBean" parameterType="com.kt.managermode.bean.system.UserBean">
-<!--         SELECT demo_id as demoId, demo_name as demoName, demo_high as demoHigh -->
-<!--         from t_demo -->
         SELECT user_id, user_name, user_nick, user_phone, user_age, user_sex, user_account, user_status, user_salt, user_password
 		FROM t_user 
 		where 1=1 

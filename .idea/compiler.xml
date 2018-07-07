@@ -7,13 +7,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Demo" />
+        <module name="jsoupDemo" />
         <module name="ManagerModule" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Demo" target="1.5" />
-      <module name="kt" target="1.5" />
-      <module name="ManagerModule" target="1.5" />
+      <module name="Demo" target="1.8" />
+      <module name="jsoupDemo" target="1.8" />
+      <module name="kt" target="1.8" />
+      <module name="ManagerModule" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
