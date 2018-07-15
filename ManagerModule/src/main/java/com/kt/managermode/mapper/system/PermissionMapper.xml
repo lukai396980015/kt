@@ -13,7 +13,7 @@
         </where>
     </select>
     <select id="queryMenuList" resultType="com.kt.managermode.bean.system.MenuBean" parameterType="com.kt.managermode.bean.system.MenuBean">
-        SELECT permission_id, permission_name, permission_url,permission_icon,permission_parent_id ,permission_order,permission_status
+        SELECT permission_id, permission_name, permission_url,permission_icon,permission_parent_id ,permission_order,permission_status ,permission_createtime ,permission_last_updatetime
         from t_permission
         where 1=1
 		<if test="permissionName!=null and permissionName!=''">

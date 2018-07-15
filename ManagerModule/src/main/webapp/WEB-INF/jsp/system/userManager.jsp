@@ -47,7 +47,7 @@ $("#grid-table").jqGrid({
 	datatype: "json",
 	mtype : "post",
 	height: 250,
-	colNames:[' ', 'userId','userName','userNick', 'userPhone', 'userAge','userSex','userAccount','userStatus','userPassword','userSalt'],
+	colNames:[' ', '用户id','用户名称','用户昵称', '用户号码', '年龄','性别','账号','状态','密码','md5加密混淆（暂时没用）'],
 	colModel:[
 		{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 			formatter:'actions', 
@@ -56,15 +56,15 @@ $("#grid-table").jqGrid({
 				delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
 			}
 		},
-		{name:'userId',index:'userId', width:60, sorttype:"int", editable: true},
-		{name:'userName',index:'userName',width:90, editable:true},
-		{name:'userNick',index:'userNick', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-		{name:'userPhone',index:'userPhone', width:70, editable: true},
-		{name:'userAge',index:'userAge', width:90, editable: true},
-		{name:'userSex',index:'userSex', width:150, sortable:false,editable: true}, 
-		{name:'userAccount',index:'userAccount', width:150, sortable:false,editable: true},
-		{name:'userStatus',index:'userStatus', width:150, sortable:false,editable: true}, 
-		{name:'userPassword',index:'userPassword', width:150, sortable:false,editable: true}, 
+		{name:'userId',name:'userId', width:60, sorttype:"int", editable: true},
+		{name:'userName',name:'userName',width:90, editable:true},
+		{name:'userNick',name:'userNick', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
+		{name:'userPhone',name:'userPhone', width:70, editable: true},
+		{name:'userAge',name:'userAge', width:90, editable: true},
+		{name:'userSex',name:'userSex', width:150, sortable:false,editable: true}, 
+		{name:'userAccount',name:'userAccount', width:150, sortable:false,editable: true},
+		{name:'userStatus',name:'userStatus', width:150, sortable:false,editable: true}, 
+		{name:'userPassword',name:'userPassword', width:150, sortable:false,editable: true}, 
 		{name:'userSalt',index:'userSalt', width:150, sortable:false,editable: true} 
 	], 
 

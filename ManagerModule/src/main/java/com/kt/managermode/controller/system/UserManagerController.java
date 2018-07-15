@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kt.managermode.bean.ResultUtilBean;
 import com.kt.managermode.bean.system.UserBean;
-import com.kt.managermode.bean.util.PageParam;
 import com.kt.managermode.service.system.IUserManagerService;
 
 @Controller

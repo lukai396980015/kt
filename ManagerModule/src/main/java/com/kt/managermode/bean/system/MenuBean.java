@@ -1,6 +1,10 @@
 package com.kt.managermode.bean.system;
 
+import com.alibaba.fastjson.annotation.JSONCreator;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.kt.managermode.bean.util.PageParam;
+
+import java.sql.Timestamp;
 
 public class MenuBean extends PageParam
 {
@@ -24,6 +28,10 @@ public class MenuBean extends PageParam
     
     // 状态
     private String permissionStatus;
+    
+    private Timestamp permissionCreatetime;
+
+    private Timestamp permissionLastUpdatetime;
     
     public int getPermissionId()
     {
@@ -94,5 +102,24 @@ public class MenuBean extends PageParam
     {
         this.permissionStatus = permissionStatus;
     }
-    
+
+    public Timestamp getPermissionCreatetime()
+    {
+        return permissionCreatetime;
+    }
+
+    public void setPermissionCreatetime(Timestamp permissionCreatetime)
+    {
+        this.permissionCreatetime = permissionCreatetime;
+    }
+
+    public Timestamp getPermissionLastUpdatetime()
+    {
+        return permissionLastUpdatetime;
+    }
+
+    public void setPermissionLastUpdatetime(Timestamp permissionLastUpdatetime)
+    {
+        this.permissionLastUpdatetime = permissionLastUpdatetime;
+    }
 }

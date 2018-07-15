@@ -222,5 +222,37 @@
 			<version>2.2.2</version>
 		</dependency>
 
+		<!-- Spring 升级4+ 依赖的JSON包 -->
+		<!--<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>&lt;!&ndash;指定jdk版本&ndash;&gt;
+		</dependency>-->
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.4</version>
+		</dependency>
+		<!--<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-lgpl</artifactId>
+			<version>1.9.6</version>
+		</dependency>-->
+		
+		<!-- /Spring 升级4+ 依赖的JSON包 -->
+		
 	</dependencies>
 </project>

@@ -47,7 +47,7 @@ $("#grid-table").jqGrid({
 	datatype: "json",
 	mtype : "post",
 	height: 250,
-	colNames:[' ', '权限id','权限名称','权限URL', '图标', '父id','顺序','状态'],	
+	colNames:[' ', '权限id','权限名称','权限URL', '图标', '父id','顺序','状态','创建时间','最后更新时间'],	
 	colModel:[
 		{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 			formatter:'actions', 
@@ -60,9 +60,11 @@ $("#grid-table").jqGrid({
 		{name:'permissionName',index:'permissionName',width:90, editable:true},
 		{name:'permissionUrl',index:'permissionUrl', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
 		{name:'permissionIcon',index:'permissionIcon', width:70, editable: true},
-		{name:'permissionParentId',index:'permissionParentId', width:90, editable: true},
-		{name:'permissionOrder',index:'permissionOrder', width:150, sortable:false,editable: true}, 
-		{name:'permissionStatus',index:'permissionStatus', width:150, sortable:false,editable: true}
+		{name:'permissionParentId',index:'permissionParentId', width:30, editable: true},
+		{name:'permissionOrder',index:'permissionOrder', width:30, sortable:false,editable: true}, 
+		{name:'permissionStatus',index:'permissionStatus', width:30, sortable:false,editable: true},
+		{name:'permissionCreatetime',index:'permissionCreatetime', width:80, sortable:false,editable: false},
+		{name:'permissionLastUpdatetime',index:'permissionLastUpdatetime', width:80, sortable:false,editable: false}
 	], 
 
 	viewrecords : true,
@@ -108,6 +110,14 @@ $("#grid-table").jqGrid({
 	*/
 
 });
+
+//enable datepicker
+function pickDate( cellvalue, options, cell ) {
+    setTimeout(function(){
+		$(cell) .find('input[type=text]')
+			.datepicker({format:'yyyy-mm-dd' , autoclose:true}); 
+	}, 0);
+}
 
 function updatePagerIcons(table) {
 	var replacement = 

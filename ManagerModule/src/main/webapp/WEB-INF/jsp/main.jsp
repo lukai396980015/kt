@@ -111,10 +111,7 @@
 							      
 							      //a标签
 							      var menua = $("<a href='#' class='dropdown-toggle'></a>");
-							      if(menu.permissionUrl!=null&&menu.permissionUrl!="")
-							      {
-							    	  menua = $("<a href='"+menu.permissionUrl+"'></a>");
-							      }
+							      
 							      //i标签
 							      var menui = $("<i class='menu-icon fa fa-list'></i>");
 							      //span标签
@@ -126,6 +123,15 @@
 							      menuli.append(menua)
 							      menuli.append(menub)
 							      $("#menuUL").append(menuli);
+							      
+							      if(menu.permissionUrl!=null&&menu.permissionUrl!="")
+                                  {
+                                      $("#menu"+menu.permissionId).on("click",function(event)
+                                      {
+                                          loadPageContent(menu.permissionUrl);
+                                      });
+                                  }
+							      
 							      if(menu.childrenMenuBeans!=null&&menu.childrenMenuBeans.length>0)
 								  {
 									initMenu(menu.childrenMenuBeans);
