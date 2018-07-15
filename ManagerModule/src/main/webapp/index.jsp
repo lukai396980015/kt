@@ -55,6 +55,8 @@
 					
 			e.preventDefault();
 		});
+
+
 		$('#loginButton').on('click',function(e)
 		{
 			$('#loginFrom').submit();
@@ -114,6 +116,10 @@
 														<label class="inline">
 															<input type="checkbox" class="ace" />
 															<span class="lbl"> 记住我</span>
+														</label>
+														<label class="inline">
+															<input type="checkbox" class="ace" />
+															<span class="lbl" id="loginMsg"></span>
 														</label>
 
 														<button type="button" id="loginButton" class="width-35 pull-right btn btn-sm btn-primary">

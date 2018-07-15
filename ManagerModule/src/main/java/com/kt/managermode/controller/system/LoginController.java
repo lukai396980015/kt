@@ -48,7 +48,7 @@ public class LoginController
             if (subject.isAuthenticated()) {
                 return "main";
             } else {
-                return "loginFaile";
+                return "main";
             }
         } catch (IncorrectCredentialsException e) {
             msg = "登录密码错误. Password for account " + token.getPrincipal() + " was incorrect.";
@@ -79,6 +79,6 @@ public class LoginController
             model.addAttribute("message", msg);
             System.out.println(msg);
         }
-        return "loginFaile";
+        return "../../index";
     }
 }
