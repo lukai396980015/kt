@@ -61,7 +61,7 @@ $("#grid-table").jqGrid({
 		{name:'userNick',name:'userNick', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
 		{name:'userPhone',name:'userPhone', width:70, editable: true},
 		{name:'userAge',name:'userAge', width:90, editable: true},
-		{name:'userSex',name:'userSex', width:150, sortable:false,editable: true}, 
+		{name:'userSex',name:'userSex', width:150, sortable:false,editable: true,edittype:"select",editoptions:{value:"1:男;2:女"}}, 
 		{name:'userAccount',name:'userAccount', width:150, sortable:false,editable: true},
 		{name:'userStatus',name:'userStatus', width:150, sortable:false,editable: true}, 
 		{name:'userPassword',name:'userPassword', width:150, sortable:false,editable: true}, 
@@ -153,6 +153,7 @@ jQuery("#grid-table").jqGrid('navGrid',"#grid-pager",
 		beforeShowForm : function(e) {
 			var form = $(e[0]);
 			form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+			form.closest('.ui-jqdialog').attr('align','center');
 			style_edit_form(form);
 		}
 	},
@@ -212,6 +213,33 @@ jQuery("#grid-table").jqGrid('navGrid',"#grid-pager",
 		}
 	}
 )
+/**
+ * 修改
+ * @author 鲁凯
+ * @since 2018/7/17/017 9:47
+ * 
+ */
+function style_edit_form(form) 
+{
+	//enable datepicker on "sdate" field and switches for "stock" field
+	//form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+	
+	//form.find('input[name=stock]').addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
+			   //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
+			  //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
+
+			
+	//update buttons classes
+	var buttons = form.next().find('.EditButton .fm-button');
+	buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
+	buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
+	buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
+	
+	buttons = form.next().find('.navButton a');
+	buttons.find('.ui-icon').hide();
+	buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
+	buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');		
+}
 
 
 function beforeDeleteCallback(e) {

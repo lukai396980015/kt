@@ -18,7 +18,7 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-	<bean id="customObjectMapper" class="com.pmc.dwa.common.custom.CustomObjectMapper"></bean>
+	<bean id="customObjectMapper" class="com.kt.managermode.util.CustomObjectMapper"></bean>
 
 
 	<!--避免IE执行AJAX时，返回JSON出现下载文件 -->
