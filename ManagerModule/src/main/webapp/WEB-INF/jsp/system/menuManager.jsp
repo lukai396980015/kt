@@ -47,7 +47,7 @@ $("#grid-table").jqGrid({
 	datatype: "json",
 	mtype : "post",
 	height: 250,
-	colNames:[' ', '权限id','权限名称','权限URL', '图标', '父id','顺序','状态','创建时间','最后更新时间'],	
+	colNames:[' ', '权限id','权限名称','权限URL', '图标', '父菜单','顺序','状态','创建时间','最后更新时间'],
 	colModel:[
 		{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 			formatter:'actions', 
@@ -60,9 +60,9 @@ $("#grid-table").jqGrid({
 		{name:'permissionName',index:'permissionName',width:90, editable:true},
 		{name:'permissionUrl',index:'permissionUrl', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
 		{name:'permissionIcon',index:'permissionIcon', width:70, editable: true},
-		{name:'permissionParentId',index:'permissionParentId', width:30, editable: true},
+		{name:'permissionParentId',index:'permissionParentId', width:30, editable: true, edittype:"select",formatter:getMumeNameById},
 		{name:'permissionOrder',index:'permissionOrder', width:30, sortable:false,editable: true}, 
-		{name:'permissionStatus',index:'permissionStatus', width:30, sortable:false,editable: true},
+		{name:'permissionStatus',index:'permissionStatus', width:30, sortable:false,editable: false},
 		{name:'permissionCreatetime',index:'permissionCreatetime', width:80, sortable:false,editable: false},
 		{name:'permissionLastUpdatetime',index:'permissionLastUpdatetime', width:80, sortable:false,editable: false}
 	], 
@@ -255,6 +255,24 @@ function style_edit_form(form)
 	buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');
 }
 
+
+//通过id获取菜单id对应的名称
+function getMumeNameById(cellvalue, options, rowObject)
+{
+    var resultStr = "";
+    $.ajax({
+        url:"<%=basepath%>/menuController/getMenuNameByid",
+        type: "POST",
+        data:{ permissionParentId: cellvalue },
+        async: false,
+        success:function(data){
+         if(data.code=="00000")
+         {
+                resultStr = data.result.permissionName;
+         }
+       }});
+       return resultStr;
+}
 </script>
 <title>Insert title here</title>
 </head>

@@ -66,5 +66,10 @@ public class MenuServiceImpl implements IMenuService
         Integer menuBeans = menuDao.getCount(menuBean);
         return menuBeans;
     }
-    
+
+    @Override
+    public MenuBean getMenuNameByid(MenuBean menuBean) {
+        return menuDao.getMenuNameByid(menuBean);
+    }
+
 }

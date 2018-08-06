@@ -14,4 +14,6 @@ public interface IMenuService
     public List<MenuBean> queryMenuList(MenuBean menuBean);
     
     public Integer getCount(MenuBean menuBean);
+
+    public MenuBean getMenuNameByid(MenuBean menuBean);
 }

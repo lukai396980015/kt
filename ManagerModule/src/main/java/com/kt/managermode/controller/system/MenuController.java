@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.kt.managermode.bean.ResultUtilBeanSingle;
+import com.kt.managermode.util.ResultCodes;
+import com.kt.managermode.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,5 +51,18 @@ public class MenuController
     public String showAllMenu(Model model)
     {
         return "system/menuManager";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getMenuNameByid")
+    public ResultUtilBeanSingle getMenuNameByid(Model model,MenuBean menuBean)
+    {
+        if(menuBean==null|| StringUtil.isEmpty(menuBean.getPermissionId()))
+        {
+            return ResultUtilBeanSingle.getResult(ResultCodes.PARAM_ERROR,"参数异常",null);
+        }
+        MenuBean resultMenuBean = menuService.getMenuNameByid(menuBean);
+        ResultUtilBeanSingle result = ResultUtilBeanSingle.getResult(ResultCodes.SUCCESS,"成功",resultMenuBean);
+        return result;
     }
 }
