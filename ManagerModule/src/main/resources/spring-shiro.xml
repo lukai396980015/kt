@@ -38,6 +38,8 @@
 	   Shiro主过滤器本身功能十分强大，其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行
 	   Web应用中，Shiro可控制的Web请求必须经过Shiro主过滤器的拦截，Shiro对基于Spring的Web应用提供了完美的支持 
 	-->
+	<!--自定义过滤器-->
+	<bean id="authenticationFilter" class="com.kt.managermode.controller.system.AuthenticationFilter"/>
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<!-- Shiro的核心安全接口，这个属性是必须的 -->
 		<property name="securityManager" ref="securityManager"></property>
@@ -47,10 +49,17 @@
 <!-- 		<property name="successUrl" value="/main.jsp" ></property> -->
 		<!-- 用户访问未对其授权的资源时，所显示的连接 -->
 		<property name="unauthorizedUrl" value="/error.jsp"></property>
+		<!--因为默认过滤器返回的是jsp页面，本实例需要返回json所以自定义过滤器-->
+		<property name="filters">
+			<map>
+				<entry key="authc" value-ref="authenticationFilter"/>
+			</map>
+		</property>
 		<property name="filterChainDefinitions">
 			<value>
 				/=anon
 				/static/**=anon
+				/loginController/loginAjax=anon
 				/loginController/login=anon
 				/**=authc
 			</value>
