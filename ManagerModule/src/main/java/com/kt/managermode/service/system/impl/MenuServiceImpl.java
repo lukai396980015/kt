@@ -1,8 +1,10 @@
 package com.kt.managermode.service.system.impl;
 
 import java.util.List;
+import java.util.Map;
 
-
+import com.kt.managermode.bean.system.ServerResponse;
+import com.kt.managermode.util.ResultCodes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,12 @@ public class MenuServiceImpl implements IMenuService
     {
         List<MenuBeanTree> menuBeans = menuDao.loadPermission(0);
         return this.forMenu(menuBeans);
+    }
+    
+    public Map<String,Object> userinfoAndPermission()
+    {
+        //List<MenuBeanTree> menuBeans = menuDao.loadPermission(0);
+        return null;
     }
     
     public List<MenuBeanTree> forMenu(List<MenuBeanTree> menuBeans)

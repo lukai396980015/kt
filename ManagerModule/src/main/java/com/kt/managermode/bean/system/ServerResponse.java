@@ -1,6 +1,7 @@
 package com.kt.managermode.bean.system;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author lukai
@@ -15,6 +16,9 @@ public class ServerResponse implements Serializable
     /*结果提示信息*/
     private String resultMsg;
 
+    /*返回数据*/
+    private Map<String,Object> resultData;
+    
     public String getResultCode()
     {
         return resultCode;
@@ -27,9 +31,14 @@ public class ServerResponse implements Serializable
      */
     public static ServerResponse createDefaultResult(String errorCode,String errorMsg)
     {
+        return createDefaultResult(errorCode,errorMsg,null);
+    }
+    public static ServerResponse createDefaultResult(String errorCode,String errorMsg,Map<String,Object> resultData)
+    {
         ServerResponse result = new ServerResponse();
         result.setResultCode(errorCode);
         result.setResultMsg(errorMsg);
+        result.setResultData(resultData);
         return result;
     }
     public void setResultCode(String resultCode)
@@ -45,5 +54,15 @@ public class ServerResponse implements Serializable
     public void setResultMsg(String resultMsg)
     {
         this.resultMsg = resultMsg;
+    }
+
+    public Map<String, Object> getResultData()
+    {
+        return resultData;
+    }
+
+    public void setResultData(Map<String, Object> resultData)
+    {
+        this.resultData = resultData;
     }
 }

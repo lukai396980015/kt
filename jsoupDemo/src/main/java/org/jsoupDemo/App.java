@@ -3,12 +3,13 @@ package org.jsoupDemo;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 /**
@@ -17,37 +18,44 @@ import org.jsoup.select.Elements;
  */
 public class App
 {
-    public static Elements chapterElements = new Elements();
+    public static List<Map<String,String>> CHAPTERLIST = new ArrayList<Map<String,String>>();
+    public static List<Map<String,String>> ERRORCHAPTERLIST = new ArrayList<Map<String,String>>();
     
     public static void main(String[] args) throws Exception
     {
-        String uri = "https://m.88dus.com/";
-        String sy = "mulu/472-1/";
+        String resultPath = "E:/adesk/tempFile/都市仙尊.txt";
+        String errorResultPath = "E:/adesk/tempFile/都市仙尊_error.txt";
+        //https://www.bxwx.la/b/274/274556/1457276.html
+        String uri = "https://www.bxwx.la/";
+        String sy = "b/274/274556/";
         //获取所有章节列表
         getChapterList(uri,sy);
-        
-        if(chapterElements.size()>0)
+        for (int i = 0;i<CHAPTERLIST.size();i++)
         {
-            int flag = 1;
-//            Elements liElements = chapterElements;
-            for (int i = 0; i < chapterElements.size(); i++)
-            {
-                Element liElement = chapterElements.get(i);
-                //获取所有a标签
-                Elements aElements = liElement.getElementsByTag("a");
-                for (int j = 0; j < aElements.size(); j++)
+            CHAPTERLIST.get(i).forEach((String key, String value) -> {
+                try
                 {
-                    //获取href节点的值
-                    String href = aElements.get(j).attributes().get("href");
-                    String hrefTitle = aElements.get(j).html();
-                    hrefTitle=hrefTitle.replace("&nbsp;", "");
-                    hrefTitle=hrefTitle.replaceAll("<.*>", "");
-                    hrefTitle=hrefTitle.replaceAll("</.*>", "");
-                    //打开页面并获取页面中的文件内容
-                    getPageContent(uri+href,"第"+flag+"章 "+hrefTitle);
-                    flag = flag +1;
+                    getPageContent(uri+value,key,resultPath);
                 }
-            }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            });
+        }
+        int errorChapterSize = ERRORCHAPTERLIST.size();
+        for (int i = 0;i<ERRORCHAPTERLIST.size();i++)
+        {
+            ERRORCHAPTERLIST.get(i).forEach((String key, String value) -> {
+                try
+                {
+                    getPageContent(uri+value,key,errorResultPath);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            });
         }
         
 //        System.out.println(aElements.html());
@@ -73,70 +81,83 @@ public class App
        
     public static void getChapterList(String uri,String path) throws IOException
     {
-        List<Elements> elements = new ArrayList<Elements>();
-        Document doc = Jsoup.connect(uri+path).get();
-        Elements aElements = doc.body().getElementsByTag("a");
-        Elements liElements = doc.body().getElementsByTag("li");
-        chapterElements.addAll(liElements);
-        for (int i = 0; i < aElements.size(); i++)
+        
+        Document doc = Jsoup.connect(uri+path).userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").get();
+        Elements ddElements = doc.body().getElementsByTag("dd");
+        Elements dtElements = doc.body().getElementsByTag("dt");
+        int firstDlIndex = 0;
+        for (Element dtElement:dtElements)
         {
-            Element aElement = aElements.get(i);
-            String a = aElement.html();
-            if(a.contains("下一页"))
+            String dtOwnTxt = dtElement.ownText();
+            if(dtOwnTxt!=null&&dtOwnTxt.contains("正文"))
             {
-                String nextPaht = aElement.attributes().get("href");
-                getChapterList(uri,nextPaht);
+                firstDlIndex = doc.body().getAllElements().indexOf(dtElement);
             }
         }
+        Iterator ddElementsIt =  ddElements.iterator();
+        while (ddElementsIt.hasNext())
+        {
+            Element ddElement = (Element)ddElementsIt.next();
+            int ddIndex = doc.body().getAllElements().indexOf(ddElement);
+            
+            if(ddIndex>firstDlIndex)
+            {
+                Elements aElements = ddElement.getElementsByTag("a");
+                Map<String,String> chapterinfoMap = new HashMap<String,String>();
+                chapterinfoMap.put(aElements.first().ownText(),aElements.first().attr("href"));
+                CHAPTERLIST.add(chapterinfoMap);
+                
+            }
+        }
+        
     }
     
-    public static void getPageContent(String url,String chapterName)
-        throws Exception
+    public static void getPageContent(String url,String chapterName,String resultPath)
+        throws IOException
+
     {
         FileWriter fw = null;
+        // 打开页面并获取页面中的文件内容
+        Document docBookPage = null;
+        for(int i=0;i<4;i++)
+        {
+            try
+            {
+                docBookPage = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").get();
+                break;
+            }
+            catch (IOException e)
+            {
+                if(i==3)
+                {
+                    System.out.println("error:"+url );
+                }
+            }
+        }
+        
         try
         {
             
-            // 打开页面并获取页面中的文件内容
-            Document docBookPage = Jsoup.connect(url).get();
-            Element element = docBookPage.body().getElementById("nr1");
-            element.removeClass("nr_page");
-            element.removeClass("my-ad");
-            element.removeAttr("_blank");
+            Element element = docBookPage.body().getElementById("content");
             element.getElementsByTag("script").remove();
-            Elements fontElements = element.getElementsByTag("font");
-            for (int i = 0; i < fontElements.size(); i++)
-            {
-                Element fontElement = fontElements.get(i);
-                String font = fontElement.html();
-                if(font.contains("m.88dus.com"))
-                {
-                    fontElement.remove();
-                }
-            }
-            Elements aElements = element.getElementsByTag("a");
-            for (int i = 0; i < aElements.size(); i++)
-            {
-                Element aElement = aElements.get(i);
-                String a = aElements.html();
-                if(a!=null&&a.contains("www.69zw.com"))
-                {
-                    aElement.remove();
-                }
-            }
             String content = element.html();
-            File outFile = new File("D:/adesk/tempFile/a.txt");
+            content = content.replaceAll("<br>","");
+            content = content.replaceAll("<br/>","");
+            content = content.replaceAll("&nbsp;","");
+            File outFile = new File(resultPath);
             fw = new FileWriter(outFile, true);
-            content=content.replace("&nbsp;", "");
-            content=content.replaceAll("<.*>", "");
-            content=content.replaceAll("</.*>", "");
             if(content!=null&&content.trim().length()>0)
             {
                 fw.write("\r\n"+chapterName+"\r\n");
                 fw.write(content);
             }
-//            System.out.println(content);
             fw.flush();
+        }catch (Exception e)
+        {
+            Map<String,String> chapterError = new HashMap<String,String>();
+            chapterError.put("chapterName",url);
+            ERRORCHAPTERLIST.add(chapterError);
+            System.out.println(url);
         }
         finally
         {

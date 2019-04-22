@@ -1,10 +1,14 @@
 package com.kt.managermode.controller.system;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.kt.managermode.bean.ResultUtilBeanSingle;
+import com.kt.managermode.bean.system.ServerResponse;
 import com.kt.managermode.util.ResultCodes;
 import com.kt.managermode.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,20 @@ public class MenuController
     public List<MenuBeanTree> loadMenu(Model model)
     {
         return menuService.loadMenu();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/userinfoAndPermission",method = RequestMethod.POST)
+    public ServerResponse userinfoAndPermission(Model model)
+    {
+        Map<String,Object> resultData = new HashMap<String,Object>();
+        List<String> roules = new ArrayList<String>();
+        roules.add("admin");
+        roules.add("test");
+        resultData.put("name","admin");
+        resultData.put("avatar","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        resultData.put("roles",roules);
+        ServerResponse serverResponse = ServerResponse.createDefaultResult(ResultCodes.SUCCESS,"success",resultData);
+        return serverResponse;
     }
     @RequestMapping(value = "/getChildrenMenu",method = RequestMethod.POST)
     public List<MenuBeanTree> getChildrenMenu(Integer permissionId, Model model)
