@@ -24,7 +24,7 @@ public class ResultUtilBean<T>
     {
         ResultUtilBean result = new ResultUtilBean();
         result.page=page;
-        if(count!=null)
+        if(count!=null&&count!=0&&records!=0)
         {
             result.total=(count/records)+(count%records>0?1:0);
         }else

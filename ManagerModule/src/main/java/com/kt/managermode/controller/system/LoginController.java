@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONReader;
 import com.kt.managermode.bean.system.ServerResponse;
+import com.kt.managermode.bean.system.UserBean;
 import com.kt.managermode.bean.util.StriUtil;
 import com.kt.managermode.util.ResultCodes;
 import org.apache.log4j.Logger;
@@ -20,6 +21,7 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -106,11 +108,11 @@ public class LoginController
      */
     @RequestMapping(value = "/loginAjax",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse loginAjax(HttpServletRequest request, Model model) {
+    public ServerResponse loginAjax(HttpServletRequest request, Model model,@RequestBody UserBean uservean) {
         //{"code":20000,"data":{"token":"admin"}}
         String msg = "";
-        String userName = request.getParameter("username");
-        String password = request.getParameter("password");
+        String userName = uservean.getUserName();
+        String password = uservean.getUserPassword();
         try
         {
             if(StriUtil.isEmpty(userName)||StriUtil.isEmpty(password))
