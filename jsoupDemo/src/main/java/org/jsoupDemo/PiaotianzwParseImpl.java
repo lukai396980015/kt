@@ -17,11 +17,11 @@ import java.util.*;
  */
 public class PiaotianzwParseImpl implements ParseHtml
 {
-    public static List<Map<String,String>> CHAPTERLIST = new ArrayList<Map<String,String>>();
-    public static List<Map<String,String>> ERRORCHAPTERLIST = new ArrayList<Map<String,String>>();
+    public List<Map<String,String>> CHAPTERLIST = new ArrayList<Map<String,String>>();
+    public List<Map<String,String>> ERRORCHAPTERLIST = new ArrayList<Map<String,String>>();
 
-    public static String url;
-    public static String bookname;
+    public String url;
+    public String bookname;
     
     public PiaotianzwParseImpl(String url,String bookname)
     {
@@ -74,7 +74,7 @@ public class PiaotianzwParseImpl implements ParseHtml
      * @since 2019/6/6/006 10:35
      * 
      */
-    public static void getChapterList(String uri,String path) throws IOException
+    public void getChapterList(String uri,String path) throws IOException
     {
 
         Document doc = Jsoup.connect(uri+path).userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").get();
@@ -91,13 +91,13 @@ public class PiaotianzwParseImpl implements ParseHtml
                 String chapterName = atag.ownText();
                 Map<String,String> map = new HashMap<String,String>();
                 map.put(chapterName,uri+href);
-                CHAPTERLIST.add(map);
+                this.CHAPTERLIST.add(map);
             }
         }
 
     }
 
-    public static void getPageContent(String url,String chapterName,String resultPath)
+    public void getPageContent(String url,String chapterName,String resultPath)
         throws IOException
 
     {
@@ -147,7 +147,7 @@ public class PiaotianzwParseImpl implements ParseHtml
         {
             Map<String,String> chapterError = new HashMap<String,String>();
             chapterError.put("chapterName",url);
-            ERRORCHAPTERLIST.add(chapterError);
+            this.ERRORCHAPTERLIST.add(chapterError);
             System.out.println(url);
         }
         finally
