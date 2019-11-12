@@ -66,6 +66,7 @@ public class PiaotianzwParseImpl implements ParseHtml
                 }
             });
         }
+        System.out.println(bookname+"获取完成");
     }
 
     /**
