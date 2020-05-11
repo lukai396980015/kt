@@ -7,7 +7,6 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import org.util.FileUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -36,8 +35,6 @@ public class QRCode
             String str = scanner.next();
             String formatStr = new String(str.getBytes(),"UTF-8");
             generateQRCodeImage(formatStr, 350, 350, QR_CODE_IMAGE_PATH);
-            String br = FileUtil.getContents(CUSTOMIZE_PIC_IMAGE_PATH,null);
-            //ImageInputStream imageis = ImageIO.createImageInputStream(new ByteArrayInputStream(br.getBytes()));
             BufferedImage customize_pic_image_buff = ImageIO.read(new File(CUSTOMIZE_PIC_IMAGE_PATH));
             BufferedImage qr_code_image_buff = ImageIO.read(new File(QR_CODE_IMAGE_PATH));
             Graphics2D graphics = qr_code_image_buff.createGraphics();
