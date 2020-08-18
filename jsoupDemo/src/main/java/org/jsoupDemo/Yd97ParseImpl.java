@@ -3,19 +3,23 @@ package org.jsoupDemo;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author lukai
  * @TODO TODO自定义描述
  * @create 2019-06-06 9:43
  */
-public class PiaotianzwParseImpl implements ParseHtml
+public class Yd97ParseImpl implements ParseHtml
 {
     public List<Map<String,String>> CHAPTERLIST = new ArrayList<Map<String,String>>();
     public List<Map<String,String>> ERRORCHAPTERLIST = new ArrayList<Map<String,String>>();
@@ -23,7 +27,7 @@ public class PiaotianzwParseImpl implements ParseHtml
     public String url;
     public String bookname;
     
-    public PiaotianzwParseImpl(String url,String bookname)
+    public Yd97ParseImpl(String url,String bookname)
     {
         this.url = url;
         this.bookname = bookname;
@@ -34,9 +38,10 @@ public class PiaotianzwParseImpl implements ParseHtml
     {
         String resultPath = "E:/adesk/tempFile/"+bookname+".txt";
         String errorResultPath = "E:/adesk/tempFile/"+bookname+"_error.txt";
-        int index = url.lastIndexOf("/");
-        String uri = url.substring(0,index+1);
-        String sy = url.substring(index+1,url.length());
+        String urltemp = url.substring(8,url.length());
+        int index = url.indexOf("/",8);
+        String uri = url.substring(0,index);
+        String sy = url.substring(index,url.length());
         //获取所有章节列表
         this.getChapterList(uri,sy);
         for (int i = 0;i<CHAPTERLIST.size();i++)
@@ -78,24 +83,20 @@ public class PiaotianzwParseImpl implements ParseHtml
     public void getChapterList(String uri,String path) throws IOException
     {
 
-        Document doc = Jsoup.connect(uri+path).userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").get();
+        System.out.println(uri+path);
+        Document doc = Jsoup.connect(uri+path).userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36").timeout(5000).get();
         //Elements tdElements = doc.body().getElementsByTag("td");
         //获取章节列表
-        //获取章节列表所在的div，id=list
-        Element div_Element = doc.body().getElementById("list");
-        Elements dl_Elements = div_Element.getElementsByTag("dl");
-        if(dl_Elements==null||"".equals(dl_Elements))
+        Element readerlistsDiv = doc.body().getElementById("readerlists");
+        Elements ul_Elements  = readerlistsDiv.getElementsByTag("ul");
+        Element ul2_Elements = ul_Elements.get(1);
+        
+        Elements li_Elements = ul2_Elements.getElementsByTag("li");
+        for (Element li_Element:li_Elements)
         {
-            System.out.println("error chapterlist dl is null");
-            return ;
-        }
-        int firstDlIndex = 0;
-        for (Element dl_Element:dl_Elements)
-        {
-            Elements atags = dl_Element.getElementsByTag("a");
-            //不需要前面12个章节，前面12个章节为最近更新
-            for (int i=12;i<atags.size();i++)
-            {   Element atag = atags.get(i);
+            Elements atags = li_Element.getElementsByTag("a");
+            for (Element atag:atags)
+            {
                 String href = atag.attr("href");
                 String chapterName = atag.ownText();
                 Map<String,String> map = new HashMap<String,String>();
@@ -137,6 +138,8 @@ public class PiaotianzwParseImpl implements ParseHtml
             String content = element.html();
             content = content.replaceAll("<br>","");
             content = content.replaceAll("<br/>","");
+            content = content.replaceAll("<p>","");
+            content = content.replaceAll("</p>","");
             content = content.replaceAll("&nbsp;","");
             String table = "&lt;/table&gt;";
             int endIndex = content.indexOf(table);
