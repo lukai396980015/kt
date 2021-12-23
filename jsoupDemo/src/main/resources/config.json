@@ -1,0 +1,26 @@
+[
+  {
+    //图书名称
+    "bookname": "养兽十万亿，我的女妖荡平了诸天",
+    //图书章节文件输出路径
+    "resultRootPath": "E:/adesk/tempFile/",
+    //图书章节获取失败文件输出路径
+    "errorResultRootPath": "E:/adesk/tempFile/",
+    //图书所在站点url
+    "uri": "http://www.ncjy.net/",
+    //控制拼接章节url时，是否加上章节列表页面（shouye配置）的路径
+    "isUseSY": true,
+    //章节列表页面路径
+    "shouye": "bxwx/10834/",
+    //章节列表起始下标，部分页面会将图书的最后N章放在最前面，避免重复，
+    "chapterListIndex": 11,
+    //章节列表所在div区域
+    "chapterListDiv":"row-section",
+    //章节列表具体链接信息
+    "chapterListA":"a",
+    //是否有下一也的信息，下一页所在区域div信息
+    "nextChapterButtonDiv": "section-opt",
+    //图书内容所在id
+    "content": "content",
+  }
+]

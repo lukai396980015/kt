@@ -1,5 +1,12 @@
 package org.jsoupDemo;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.util.FileUtil;
+import org.util.Util;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -40,8 +47,21 @@ public class App
         //URL_MAP.put("召唤千军",new PiaotianzwParseImpl("https://www.piaotianzw.com/book/38525/index.html","召唤千军"));
         //URL_MAP.put("异世灵武天下",new PiaotianzwParseImpl("https://www.piaotianzw.com/book/37085/index.html","异世灵武天下"));
         //URL_MAP.put("最强修真弃少",new PiaotianzwParseImpl("https://www.piaotianzw.com/book/77368/index.html","最强修真弃少"));
-        URL_MAP.put("剑神纵横异界",new PiaotianzwParseImpl("https://www.piaotianzw.com/book_38947/","剑神纵横异界"));
+        //URL_MAP.put("剑神纵横异界",new PiaotianzwParseImpl("https://www.piaotianzw.com/book_38947/","剑神纵横异界"));
         //URL_MAP.put("全能装逼系统",new Yd97ParseImpl("https://www.97yd.com/menu/651.html","全能装逼系统"));
+        //URL_MAP.put("养兽十万亿，我的女妖荡平了诸天",new NcjyParseImpl("http://www.ncjy.net/bxwx/10834/","养兽十万亿，我的女妖荡平了诸天"));
+        //URL_MAP.put("新店开业：神兽神器，亿点点多",new Yyq7ParseImpl("https://www.7yyq.com/news/73493/","新店开业：神兽神器，亿点点多"));
+        JSONArray jsonArray = JSON.parseArray(FileUtil.getContents(App.class.getResource("/").getPath()+File.separator+"config.json","UTF-8"));
+        for(int i=0;i<jsonArray.size();i++)
+        {
+            JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+            if(Util.isNotEmpty(jsonObject,"bookname"))
+            {
+                URL_MAP.put(jsonObject.getString("bookname"),new BookParseImpl(jsonObject));
+            }
+        }
+        //URL_MAP.put("我养的狗什么时候无敌了",new FanqianxsParseImpl("http://www.fanqianxs.com/book/woyangdegoushenmeshihouwudile/","我养的狗什么时候无敌了"));
+        //URL_MAP.put("回到地球当神棍",new LstxtParseImpl("https://www.lstxt.cc/ebook/39808.html","回到地球当神棍"));
     }
     
     public static void main(String[] args) throws Exception
