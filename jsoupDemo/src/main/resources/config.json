@@ -1,11 +1,11 @@
 [
   {
-    //图书名称
-    "bookname": "养兽十万亿，我的女妖荡平了诸天",
     //图书章节文件输出路径
     "resultRootPath": "E:/adesk/tempFile/",
     //图书章节获取失败文件输出路径
     "errorResultRootPath": "E:/adesk/tempFile/",
+    //图书名称
+    "bookname": "养兽十万亿，我的女妖荡平了诸天",
     //图书所在站点url
     "uri": "http://www.ncjy.net/",
     //控制拼接章节url时，是否加上章节列表页面（shouye配置）的路径
