@@ -100,7 +100,18 @@ public class BookParseImpl implements ParseHtml
             System.out.println("获取章节列表失败，没有配置章节列表对应的标签");
             return ;
         }
-        Elements a_Elements = div_Elements.get(0).getElementsByTag(config.getString("chapterListA"));
+        Elements a_Elements = null;
+        for (Element div_e:div_Elements)
+        {
+            if(a_Elements==null)
+            {
+                a_Elements = div_e.getElementsByTag(config.getString("chapterListA"));
+            }
+            else
+            {
+                a_Elements.addAll(div_e.getElementsByTag(config.getString("chapterListA")));
+            }
+        }
         if(a_Elements==null||"".equals(a_Elements))
         {
             System.out.println("error chapterlist dl is null");
@@ -169,7 +180,29 @@ public class BookParseImpl implements ParseHtml
                 System.out.println("获取章节内容失败，没有配置内容数据节点" );
                 return;
             }
-            Element element = docBookPage.body().getElementById(config.getString("content"));
+            String contentDiv = config.getString("content");
+            Element element = null;
+            String[] contentDivConfig = contentDiv.split(":");
+            if(contentDiv.startsWith("id:"))
+            {
+                element = docBookPage.body().getElementById(contentDivConfig[1]);
+            }
+            if(contentDiv.startsWith("class:"))
+            {
+                try
+                {
+                    Elements elements = docBookPage.body().getElementsByClass(contentDivConfig[1]);
+                    element = elements.get(Integer.parseInt(contentDivConfig[2]));
+                }
+                catch (Exception e)
+                {
+                    System.out.println("获取内容所在div失败");
+                }
+            }
+            if(element==null)
+            {
+                System.out.println("获取内容所在div失败");
+            }
             element.getElementsByTag("div").remove();
             element.getElementsByTag("script").remove();
             String content = element.html();
