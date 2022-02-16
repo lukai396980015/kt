@@ -5,17 +5,19 @@
     //图书章节获取失败文件输出路径
     "errorResultRootPath": "E:/adesk/tempFile/",
     //图书名称
-    "bookname": "天庭临时工",
+    "bookname": "玄幻：大佬，求求你摊牌吧！",
     //图书所在站点url
-    "uri": "http://www.soshuw.com/",
+    "uri": "https://mip-shenggehua-com.sm-tc.cn/",
     //控制拼接章节url时，是否加上章节列表页面（shouye配置）的路径
     "isUseSY": false,
+    //不用拼接任何信息直接使用章节url
+    "notAdd": true,
     //章节列表页面路径
-    "shouye": "TianTingLinShiGong0/",
+    "shouye": "c/mip.shenggehua.com/book/XQMGBAI.html",
     //章节列表起始下标，部分页面会将图书的最后N章放在最前面，避免重复，
-    "chapterListIndex": 10,
+    "chapterListIndex": 0,
     //章节列表所在div区域
-    "chapterListDiv":"novel_list",
+    "chapterListDiv":"booklist",
     //章节列表具体链接信息
     "chapterListA":"a",
     //是否有下一也的信息，下一页所在区域div信息

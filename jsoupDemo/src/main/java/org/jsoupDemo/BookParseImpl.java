@@ -128,6 +128,10 @@ public class BookParseImpl implements ParseHtml
             {
                 map.put(chapterName,uri+path+href);
             }
+            else if(config.getBoolean("notAdd"))
+            {
+                map.put(chapterName,href);
+            }
             else
             {
                 map.put(chapterName,uri+href);
