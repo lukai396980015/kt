@@ -6,9 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Demo" />
-        <module name="jsoupDemo" />
         <module name="ManagerModule" />
+        <module name="jsoupDemo" />
+        <module name="Demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,5 +17,12 @@
       <module name="kt" target="1.8" />
       <module name="ManagerModule" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Demo" options="-verbose -source 1.8 -target 1.8 -bootclasspath &quot;C:\Program Files\Java\jre1.8.0_111\lib\rt.jar;C:\Program Files\Java\jre1.8.0_111\lib\jce.jar&quot;" />
+      <module name="ManagerModule" options="-verbose -source 1.8 -target 1.8 -bootclasspath &quot;C:\Program Files\Java\jre1.8.0_111\lib\rt.jar;C:\Program Files\Java\jre1.8.0_111\lib\jce.jar&quot;" />
+      <module name="jsoupDemo" options="-verbose -source 1.8 -target 1.8 -bootclasspath &quot;C:\Program Files\Java\jre1.8.0_111\lib\rt.jar;C:\Program Files\Java\jre1.8.0_111\lib\jce.jar&quot;" />
+    </option>
   </component>
 </project>

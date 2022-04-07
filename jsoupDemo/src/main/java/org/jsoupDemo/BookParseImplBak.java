@@ -3,13 +3,11 @@ package org.jsoupDemo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import javafx.concurrent.Task;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.util.Util;
-import sun.nio.ch.ThreadPool;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,27 +16,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
 
-public class BookParseImpl implements ParseHtml
+public class BookParseImplBak implements ParseHtml
 {
     public List<Map<String,String>> CHAPTERLIST = new ArrayList<Map<String,String>>();
     public List<Map<String,String>> ERRORCHAPTERLIST = new ArrayList<Map<String,String>>();
 
     public JSONObject config;
 
-    public BookParseImpl(JSONObject config)
+    public BookParseImplBak(JSONObject config)
     {
         this.config = config;
     }
 
-    final int THREAD_NUM = 20;
-    public ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_NUM);
-    public ExecutorService writerThreadPool = Executors.newSingleThreadExecutor();
-
-
     public void parseHtml()
-        throws IOException
+            throws IOException
     {
         String bookname= config.getString("bookname");
         String resultRootPath = config.getString("resultRootPath");
@@ -47,47 +39,35 @@ public class BookParseImpl implements ParseHtml
         String errorResultPath = errorResultRootPath+bookname+"_error.txt";
         String uri = config.getString("uri");
         String sy = config.getString("shouye");
-        this.getChapterList(uri,sy,config.getBoolean("isUseSY"),config.getInteger("chapterListIndex"));
         //获取所有章节列表
-        //每次跳过100个循环
-        for (int i = 0;i<CHAPTERLIST.size();i=i+THREAD_NUM)
+        this.getChapterList(uri,sy,config.getBoolean("isUseSY"),config.getInteger("chapterListIndex"));
+        for (int i = 0;i<CHAPTERLIST.size();i++)
         {
-            int chapterCount = CHAPTERLIST.size();
-            int lastIndex = chapterCount>(i+THREAD_NUM)?(i+THREAD_NUM):chapterCount;
-            List<Map<String,String>> subList = CHAPTERLIST.subList(i,lastIndex);
-            List array = new ArrayList();
-            System.out.println("循环sublist"+subList);
-            for(Map<String,String> sub :subList)
-            {
-                sub.forEach((String key, String value) -> {
-                    System.out.println("循环key"+key);
-                    try
-                    {
-                        Callable callable = new MyCallable(value,key,config);
-                        array.add(callable);
-                        threadPool.submit(callable);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                });
-            }
-            try {
-                List<Future<String>> result = threadPool.invokeAll(array);
-                for(int x=0;x<result.size();x++)
+            CHAPTERLIST.get(i).forEach((String key, String value) -> {
+                try
                 {
-                    //获取到所有结果后才继续请求剩余章节，如果直接把Future放到线程 会导致请求过快刷死对方服务器
-                    String content = result.get(x).get();
-                    BookWriterTask bwt = new BookWriterTask(content,resultPath);
-                    writerThreadPool.submit(bwt);
+                    getPageContent(value,key,resultPath);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            });
         }
-
+        int errorChapterSize = ERRORCHAPTERLIST.size();
+        for (int i = 0;i<ERRORCHAPTERLIST.size();i++)
+        {
+            ERRORCHAPTERLIST.get(i).forEach((String key, String value) -> {
+                try
+                {
+                    getPageContent(value,key,errorResultPath);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            });
+        }
         System.out.println(bookname+"获取完成");
     }
 
@@ -100,19 +80,7 @@ public class BookParseImpl implements ParseHtml
     public void getChapterList(String uri,String path,boolean isUsesy,int chapterlistIndex) throws IOException
     {
         String chapterlistPage = config.getString("shouyeName");
-        Document doc = null;
-        try {
-
-            doc = Jsoup.connect(uri+path+chapterlistPage).userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").get();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        if(doc==null)
-        {
-            System.out.println("获取章节列表失败,url="+uri+path+chapterlistPage);
-            return ;
-
-        }
+        Document doc = Jsoup.connect(uri+path+chapterlistPage).userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").get();
         //Elements tdElements = doc.body().getElementsByTag("td");
         //获取章节列表
         //获取章节列表所在的div，id=list
@@ -183,7 +151,7 @@ public class BookParseImpl implements ParseHtml
     }
 
     public void getPageContent(String url,String chapterName,String resultPath)
-        throws IOException
+            throws IOException
 
     {
         FileWriter fw = null;

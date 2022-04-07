@@ -5,24 +5,27 @@
     //图书章节获取失败文件输出路径
     "errorResultRootPath": "E:/adesk/tempFile/",
     //图书名称
-    "bookname": "玄幻：大佬，求求你摊牌吧！",
+    "bookname": "我，废材小师叔，开局成就剑圣",
     //图书所在站点url
-    "uri": "https://mip-shenggehua-com.sm-tc.cn/",
+    "uri": "http://www.gzwbqj.com",
     //控制拼接章节url时，是否加上章节列表页面（shouye配置）的路径
     "isUseSY": false,
     //不用拼接任何信息直接使用章节url
-    "notAdd": true,
+    "notAdd": false,
     //章节列表页面路径
-    "shouye": "c/mip.shenggehua.com/book/XQMGBAI.html",
+    "shouye": "",
+    //全量章节列表页面名称
+    "shouyeName": "/html/106383",
     //章节列表起始下标，部分页面会将图书的最后N章放在最前面，避免重复，
     "chapterListIndex": 0,
-    //章节列表所在div区域
-    "chapterListDiv":"booklist",
+    //章节列表所在div区域 所在id(id格式为id:id名称)或者class(class格式为class:class名称:第x个class从0开始)
+    "chapterListDiv":"class:section-box:1",
     //章节列表具体链接信息
     "chapterListA":"a",
-    //是否有下一也的信息，下一页所在区域div信息
-    "nextChapterButtonDiv": "",
-    //图书内容所在id(id格式为id:id名称)或者class(class格式为class:class名称:第x个class从0开始)
-    "content": "class:content:0",
+    //是否有下一也的信息，下一页所在区域  所在id(id格式为id:id名称)或者class(class格式为class:class名称:第x个class从0开始)
+    "nextChapterButton": "class:section-opt:1",
+    "nextChapterButtonText": "下一页",
+    //图书内容所在id(id格式为id:id名称)或者class(class格式为class:class名称:第x个class 从0开始)
+    "content": "id:content",
   }
 ]
