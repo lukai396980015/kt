@@ -81,12 +81,28 @@ public class BookParseImpl implements ParseHtml
                     //获取到所有结果后才继续请求剩余章节，如果直接把Future放到线程 会导致请求过快刷死对方服务器
                     String content = result.get(x).get();
                     BookWriterTask bwt = new BookWriterTask(content,resultPath);
+                    //写数据使用单线程池，保证所有处理依次执行避免章节错乱
                     writerThreadPool.submit(bwt);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        //等待线程执行结束或者超时，超时时间默认设置1小时
+        try {
+            boolean readData = threadPool.awaitTermination(1,TimeUnit.HOURS);
+            boolean writeData =writerThreadPool.awaitTermination(1,TimeUnit.HOURS);
+            //如果线程池执行结束，则停止线程
+            if(readData&&writeData)
+            {
+                threadPool.shutdown();
+                writerThreadPool.shutdown();
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
 
         System.out.println(bookname+"获取完成");
     }
