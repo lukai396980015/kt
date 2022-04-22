@@ -88,22 +88,10 @@ public class BookParseImpl implements ParseHtml
                 e.printStackTrace();
             }
         }
+        //所有需要提交的任务已经提交给线程池，停止线程池（使线程池不在接收信息的任务，但是还是会继续完成已经排队中的线程）
+        threadPool.shutdown();
+        writerThreadPool.shutdown();
         //等待线程执行结束或者超时，超时时间默认设置1小时
-        try {
-            boolean readData = threadPool.awaitTermination(1,TimeUnit.HOURS);
-            boolean writeData =writerThreadPool.awaitTermination(1,TimeUnit.HOURS);
-            //如果线程池执行结束，则停止线程
-            if(readData&&writeData)
-            {
-                threadPool.shutdown();
-                writerThreadPool.shutdown();
-            }
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-
         System.out.println(bookname+"获取完成");
     }
 
