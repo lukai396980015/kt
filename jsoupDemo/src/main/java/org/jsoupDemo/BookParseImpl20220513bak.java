@@ -1,16 +1,12 @@
 package org.jsoupDemo;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import javafx.concurrent.Task;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.jsoupDemo.impl.BookInfoImpl;
 import org.util.Util;
-import sun.nio.ch.ThreadPool;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,16 +15,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-public class BookParseImpl implements ParseHtml
+public class BookParseImpl20220513bak implements ParseHtml
 {
     public List<Map<String,String>> CHAPTERLIST = new ArrayList<Map<String,String>>();
     public List<Map<String,String>> ERRORCHAPTERLIST = new ArrayList<Map<String,String>>();
 
     public JSONObject config;
 
-    public BookParseImpl(JSONObject config)
+    public BookParseImpl20220513bak(JSONObject config)
     {
         this.config = config;
     }
@@ -50,9 +49,9 @@ public class BookParseImpl implements ParseHtml
         String sy = config.getString("shouye");
         String chapterlistPage = config.getString("shouyeName");
 
-        BookInfo bookInfo = new BookInfoImpl();
-        //初始化图书信息
-        bookInfo.initBook(config);
+        BookInfoImpl bookInfo = new BookInfoImpl();
+        bookInfo.setBookName(bookname);
+        bookInfo.setBookChapterListUrl(uri+sy+chapterlistPage);
         bookInfo.buildChapterList();
 
         this.getChapterList(uri,sy,config.getBoolean("isUseSY"),config.getInteger("chapterListIndex"));
