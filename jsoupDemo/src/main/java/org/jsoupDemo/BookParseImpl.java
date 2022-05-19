@@ -23,10 +23,10 @@ import java.util.concurrent.*;
 
 public class BookParseImpl implements ParseHtml
 {
-    public List<Map<String,String>> CHAPTERLIST = new ArrayList<Map<String,String>>();
+    //public List<Map<String,String>> CHAPTERLIST = new ArrayList<Map<String,String>>();
     public List<Map<String,String>> ERRORCHAPTERLIST = new ArrayList<Map<String,String>>();
 
-    public JSONObject config;
+    public static JSONObject config;
 
     public BookParseImpl(JSONObject config)
     {
@@ -52,35 +52,44 @@ public class BookParseImpl implements ParseHtml
 
         BookInfo bookInfo = new BookInfoImpl();
         //初始化图书信息
-        bookInfo.initBook(config);
+        boolean bookloadsuccess = bookInfo.initBook(config);
+        if(!bookloadsuccess)
+        {
+            System.out.println("图书配置文件加载失败，返回");
+            return;
+        }
+        //加载图书章节列表
         bookInfo.buildChapterList();
 
-        this.getChapterList(uri,sy,config.getBoolean("isUseSY"),config.getInteger("chapterListIndex"));
-        //获取所有章节列表
-        //每次跳过100个循环
-        for (int i = 0;i<CHAPTERLIST.size();i=i+THREAD_NUM)
+        //this.getChapterList(uri,sy,config.getBoolean("isUseSY"),config.getInteger("chapterListIndex"));
+        //获取图书章节列表
+        List<ChapterInfo> chapterList = bookInfo.getChapterList();
+        if(chapterList==null||chapterList.size()==0)
         {
-            int chapterCount = CHAPTERLIST.size();
+            return;
+        }
+        int chapterCount = chapterList.size();
+        //获取所有章节列表
+        //每次跳过THREAD_NUM个循环
+        for (int i = 0;i<chapterCount;i=i+THREAD_NUM)
+        {
             int lastIndex = chapterCount>(i+THREAD_NUM)?(i+THREAD_NUM):chapterCount;
-            List<Map<String,String>> subList = CHAPTERLIST.subList(i,lastIndex);
+            List<ChapterInfo> subList = chapterList.subList(i,lastIndex);
             List array = new ArrayList();
             System.out.println("循环sublist"+subList);
-            for(Map<String,String> sub :subList)
+            for(ChapterInfo sub :subList)
             {
-                sub.forEach((String key, String value) -> {
-                    System.out.println("循环key"+key);
-                    try
-                    {
-                        Callable callable = new MyCallable(value,key,config);
-                        array.add(callable);
-                        threadPool.submit(callable);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                });
+                System.out.println("循环key"+sub);
+                try
+                {
+                    Callable callable = new MyCallable(sub);
+                    array.add(callable);
+                    //threadPool.submit(callable);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
             try {
                 List<Future<String>> result = threadPool.invokeAll(array);
@@ -109,6 +118,7 @@ public class BookParseImpl implements ParseHtml
      * @since 2019/6/6/006 10:35
      *
      */
+    /*
     public void getChapterList(String uri,String path,boolean isUsesy,int chapterlistIndex) throws IOException
     {
         String chapterlistPage = config.getString("shouyeName");
@@ -194,6 +204,8 @@ public class BookParseImpl implements ParseHtml
 
     }
 
+     */
+    /*
     public void getPageContent(String url,String chapterName,String resultPath)
         throws IOException
 
@@ -323,5 +335,6 @@ public class BookParseImpl implements ParseHtml
             }
         }
     }
+    */
 
 }

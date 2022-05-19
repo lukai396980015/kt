@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.jsoupDemo.impl.ChapterInfoImpl;
 import org.util.Util;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public abstract class BookInfo {
     /**
      * 章节信息列表
      */
-    private List<Map<String,String>> chapterList = new ArrayList<Map<String,String>>();
+    private List<ChapterInfo> chapterList = new ArrayList<ChapterInfo>();
 
     public String getUri() {
         return uri;
@@ -139,7 +140,7 @@ public abstract class BookInfo {
         this.bookName = bookName;
     }
 
-    public List<Map<String, String>> getChapterList() {
+    public List<ChapterInfo> getChapterList() {
         return chapterList;
     }
     /*
@@ -215,21 +216,29 @@ public abstract class BookInfo {
         {   Element atag = a_Elements.get(i);
             String href = atag.attr("href");
             String chapterName = atag.ownText();
-            Map<String,String> map = new HashMap<String,String>();
+            ChapterInfo chapterInfo = new ChapterInfoImpl();
+            boolean issuccess = chapterInfo.initChapterInfo(BookParseImpl.config);
+            if(!issuccess)
+            {
+                return;
+            }
             if(this.isUsesy())
             {
-                map.put(chapterName,uri+path+href);
+                chapterInfo.setChapterName(chapterName);
+                chapterInfo.setChapterUrl(uri+path+href);
             }
             else if(this.isNotAdd())
             {
-                map.put(chapterName,href);
+                chapterInfo.setChapterName(chapterName);
+                chapterInfo.setChapterUrl(href);
             }
             else
             {
-                map.put(chapterName,uri+href);
+                chapterInfo.setChapterName(chapterName);
+                chapterInfo.setChapterUrl(uri+href);
             }
 
-            this.chapterList.add(map);
+            this.chapterList.add(chapterInfo);
         }
     }
 
@@ -240,43 +249,47 @@ public abstract class BookInfo {
      */
     public boolean initBook(JSONObject config)
     {
-        boolean result = false;
-        if(config.containsKey("bookname"))
+        boolean result = true;
+        if(Util.isEmpty(config,"bookname"))
         {
             System.out.println("没有适配到配置文件中的bookname");
-            result = true;
+            result = false;
             return result;
         }
-        if(config.containsKey("chapterListA"))
+        if(Util.isEmpty(config,"chapterListA"))
         {
             System.out.println("没有适配到配置文件中的chapterListA");
-            result = true;
+            result = false;
             return result;
         }
-        if(config.containsKey("chapterListDiv"))
+        //章节所在区域
+        if(Util.isEmpty(config,"chapterListDiv"))
         {
             System.out.println("没有适配到配置文件中的chapterListDiv");
-            result = true;
+            result = false;
             return result;
         }
-        if(config.containsKey("uri"))
+        if(Util.isEmpty(config,"uri"))
         {
             System.out.println("没有适配到配置文件中的uri");
-            result = true;
+            result = false;
             return result;
         }
-        if(config.containsKey("chapterlistIndex"))
+        if(Util.isEmpty(config,"chapterListIndex"))
         {
             System.out.println("没有适配到配置文件中的chapterlistIndex");
-            result = true;
-            return result;
+            chapterlistIndex = 0;
         }
+        else
+        {
+            this.chapterlistIndex = config.getInteger("chapterListIndex");
+        }
+
         this.bookName = config.getString("bookname");
         this.path = config.getString("shouye");
         this.chapterListA = config.getString("chapterListA");
         this.chapterListDiv = config.getString("chapterListDiv");
         this.uri = config.getString("uri");
-        this.chapterlistIndex = config.getInteger("chapterListIndex");
         this.chapterlistPage = config.getString("shouyeName");
         this.notAdd = config.getBoolean("notAdd");
         this.isUsesy = config.getBoolean("isUseSY");
