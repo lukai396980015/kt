@@ -1,3 +1,11 @@
 央视,#genre#
 CCTV1,https://node1.olelive.com:6443/live/CCTV1HD/hls.m3u8
 CCTV2,https://node1.olelive.com:6443/live/CCTV2HD/hls.m3u8
+CCTV3x,https://node1.olelive.com:6443/live/CCTV3HD/hls.m3u8
+CCTV4,https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL1.smil/playlist.m3u8
+CCTV5,https://node1.olelive.com:6443/live/CCTV5HD/hls.m3u8
+CCTV5+,https://node1.olelive.com:6443/live/CCTV5PHD/hls.m3u8
+CCTV6,https://node1.olelive.com:6443/live/CCTV6HD/hls.m3u8
+CCTV7x,https://node1.olelive.com:6443/live/CCTV7HD/hls.m3u8
+CCTV8,https://node1.olelive.com:6443/live/CCTV8HD/hls.m3u8
+CCTV9,https://node1.olelive.com:6443/live/CCTV9HD/hls.m3u8
